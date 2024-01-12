@@ -32,9 +32,9 @@ class ApiLambdaStack(Stack):
             runtime=lambda_.Runtime.PYTHON_3_10,
             code=lambda_.Code.from_asset('lambda'),
             handler='post_helloworld.lambda_handler', # file name is create_s3.py, function name is lambda_handler
-            # environment={
-            #     'body': 'test-bucket-1234567890',
-            # }
+            environment={
+                'body': 'env-test',
+            }
         )
 
         # # create an api gateway with a lambda integration
@@ -47,17 +47,20 @@ class ApiLambdaStack(Stack):
                 stage_name='dev',
             ),
         )
-        # # Define the integration
-        # integration = apigw.LambdaIntegration(lambda_function)
-
-        # v1 = api.root.add_resource("v1")
-        # echo = v1.add_resource("echo")
-        # echo_method = echo.add_method("GET", apigw.LambdaIntegration(lambda_function))
-        # echo_method = echo.add_method("POST", apigw.LambdaIntegration(lambda_function_2))
 
         # # # add a GET, post method to the root resource of the API
         api.root.add_method('GET', apigw.LambdaIntegration(lambda_function))
         api.root.add_method('POST', apigw.LambdaIntegration(lambda_function_2))
+
+
+## create an api gateway with a lambda integration from another account. create lambda function in another account. add role to api gateway. execute the cli command in dst account.
+        # api.root.add_method('GET', apigw.LambdaIntegration(
+        #     credentials_role='arn:aws:lambda:eu-central-1:991958799346:function:helloworld',
+        #     ))
+
+
+############### extra code #####################
+
 
         # # define a deployment
         # dev_deployment = apigw.Deployment(
