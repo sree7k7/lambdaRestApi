@@ -53,12 +53,6 @@ class ApiLambdaStack(Stack):
         #     description='deployment for dev and prod',
         # )
 
-        # prod_deployment = apigw.Deployment(
-        #     self, 'prod_Deployment',
-        #     api=prod.api,
-        #     description='deployment for dev and prod',
-        # )
-
         # add dev stage to api gateway
         # dev_stage = apigw.Stage(
         #     self, 'dev',
@@ -66,9 +60,3 @@ class ApiLambdaStack(Stack):
         #     stage_name='dev',
         # )
 
-        # add prod stage to api gateway
-        # prod_stage = apigw.Stage(
-        #     self, 'prod',
-        #     deployment=prod_deployment,
-        #     stage_name='prod',
-        # )
