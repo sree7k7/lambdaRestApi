@@ -32,6 +32,9 @@ class ApiLambdaStack(Stack):
             runtime=lambda_.Runtime.PYTHON_3_10,
             code=lambda_.Code.from_asset('lambda'),
             handler='post_helloworld.lambda_handler', # file name is create_s3.py, function name is lambda_handler
+            # environment={
+            #     'body': 'test-bucket-1234567890',
+            # }
         )
 
         # # create an api gateway with a lambda integration
