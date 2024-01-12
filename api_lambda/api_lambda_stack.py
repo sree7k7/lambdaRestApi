@@ -35,6 +35,7 @@ class ApiLambdaStack(Stack):
         # create an api gateway with a lambda integration
         api = apigw.LambdaRestApi(
             self, 'Endpointsz',
+            rest_api_name='ApiEndpointService',
             handler=lambda_function,
             deploy=True,    
             deploy_options=apigw.StageOptions(
