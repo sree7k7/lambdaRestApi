@@ -5,7 +5,8 @@ import json
 def lambda_handler(event, context):
     # TODO implement
     # this is comment
+    print(event)
+    # return 'Hello from TEST ' + event['body']
     return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from --post-- Lambda!')
+        'body': json.dumps('Hello from' + event['body'])
     }
