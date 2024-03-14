@@ -1,0 +1,4 @@
+Before running the HTML, please edit and input following:
+1. Input the URL for your API in Line14
+2. Upload the image file (World_Map_WSF.svg.png) to a public s3 bucket and input the url in line 35
+3. The Lambda code is also given in Resources section to be used as API Backend

@@ -8,6 +8,10 @@ from api_lambda.api_lambda_stack import ApiLambdaStack
 
 app = cdk.App()
 ApiLambdaStack(app, "ApiLambdaStack",
+               env = cdk.Environment(
+                     account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+                     region = os.getenv('CDK_DEFAULT_REGION')
+                )
     # If you don't specify 'env', this stack will be environment-agnostic.
     # Account/Region-dependent features and context lookups will not work,
     # but a single synthesized template can be deployed anywhere.

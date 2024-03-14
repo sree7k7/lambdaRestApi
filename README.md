@@ -1,58 +1,32 @@
+## api gateway integration with lambda versions
 
-# Welcome to your CDK Python project!
+- create a lambda function. Test it. 
+- Under actions: Publish new version (version-1)
+- update the code
+- under actions: publish new version (version-2)
+- test it.
 
-This is a blank project for CDK development with Python.
+### To create an alias for version 1 and 2
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+- under actions: Create alias
+- give version 4, under weighted alias: give verion 1
+- test it.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+### To integrate with API Gateway
+- Create REST API gw
+- Create Method: Get
+- for lambda: 'lambdafunctionName:${stageVariables.lambdaAlias}'
+e.g 'helloworldversion:${stageVariables.lambdaAlias}'
+- save it
 
-To manually create a virtualenv on MacOS and Linux:
-
+- execute the below command by replacing the '${stageVariables.lambdaAlias}' with alias name: 'oldestNewest'
 ```
-$ python3 -m venv .venv
-```
-
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
-$ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
+aws lambda add-permission \
+--function-name "arn:aws:lambda:eu-central-1:619831221558:function:helloworldversion:oldestNewest" \
+--source-arn "arn:aws:execute-api:eu-central-1:619831221558:uiosv8p7le/*/GET/" \
+--principal apigateway.amazonaws.com \
+--statement-id 110eeb7c-a38c-4c71-9747-aaab02d90259 \
+--action lambda:InvokeFunction
 ```
 
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
-```
-
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
-
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+- for stage variables, add Name: lambdaAlias, value: oldesNewest

@@ -1,0 +1,717 @@
+{
+ "Resources": {
+  "HelloHandlerServiceRole11EF7C63": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/HelloHandler/ServiceRole/Resource"
+   }
+  },
+  "HelloHandler2E4FBA4D": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "b8cdb9ecba3cb3d20f3ffcfad87c7a3e1e51cb44a3e2ec656c37ba13ed217716.zip"
+    },
+    "FunctionName": "helloworld",
+    "Handler": "helloworld.lambda_handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "HelloHandlerServiceRole11EF7C63",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.10"
+   },
+   "DependsOn": [
+    "HelloHandlerServiceRole11EF7C63"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/HelloHandler/Resource",
+    "aws:asset:path": "asset.b8cdb9ecba3cb3d20f3ffcfad87c7a3e1e51cb44a3e2ec656c37ba13ed217716",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "HelloPostHandlerServiceRole2035C48D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/HelloPostHandler/ServiceRole/Resource"
+   }
+  },
+  "HelloPostHandler7CDA6947": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "b8cdb9ecba3cb3d20f3ffcfad87c7a3e1e51cb44a3e2ec656c37ba13ed217716.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "body": "env-test"
+     }
+    },
+    "FunctionName": "post_helloworld",
+    "Handler": "post_helloworld.lambda_handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "HelloPostHandlerServiceRole2035C48D",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.10"
+   },
+   "DependsOn": [
+    "HelloPostHandlerServiceRole2035C48D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/HelloPostHandler/Resource",
+    "aws:asset:path": "asset.b8cdb9ecba3cb3d20f3ffcfad87c7a3e1e51cb44a3e2ec656c37ba13ed217716",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "Endpoints6D633340": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "ApiEndpointService"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Resource"
+   }
+  },
+  "EndpointsDeployment11CDA792cfe607fc174591d453a349bcccfb5c7b": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "Endpoints6D633340"
+    }
+   },
+   "DependsOn": [
+    "EndpointsGETDBEEDC1E",
+    "EndpointsPOST0F052064"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Deployment/Resource"
+   }
+  },
+  "EndpointsDeploymentStagedevDECEC388": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "EndpointsDeployment11CDA792cfe607fc174591d453a349bcccfb5c7b"
+    },
+    "RestApiId": {
+     "Ref": "Endpoints6D633340"
+    },
+    "StageName": "dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/DeploymentStage.dev/Resource"
+   }
+  },
+  "EndpointsGETApiPermissionApiLambdaStackEndpoints3B5F7AB9GET53906287": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HelloHandler2E4FBA4D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "Endpoints6D633340"
+       },
+       "/",
+       {
+        "Ref": "EndpointsDeploymentStagedevDECEC388"
+       },
+       "/GET/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Default/GET/ApiPermission.ApiLambdaStackEndpoints3B5F7AB9.GET.."
+   }
+  },
+  "EndpointsGETApiPermissionTestApiLambdaStackEndpoints3B5F7AB9GET1006BE89": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HelloHandler2E4FBA4D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "Endpoints6D633340"
+       },
+       "/test-invoke-stage/GET/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Default/GET/ApiPermission.Test.ApiLambdaStackEndpoints3B5F7AB9.GET.."
+   }
+  },
+  "EndpointsGETDBEEDC1E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "HelloHandler2E4FBA4D",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "Endpoints6D633340",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "Endpoints6D633340"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Default/GET/Resource"
+   }
+  },
+  "EndpointsPOSTApiPermissionApiLambdaStackEndpoints3B5F7AB9POSTC7828AA6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HelloPostHandler7CDA6947",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "Endpoints6D633340"
+       },
+       "/",
+       {
+        "Ref": "EndpointsDeploymentStagedevDECEC388"
+       },
+       "/POST/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Default/POST/ApiPermission.ApiLambdaStackEndpoints3B5F7AB9.POST.."
+   }
+  },
+  "EndpointsPOSTApiPermissionTestApiLambdaStackEndpoints3B5F7AB9POST5E32F755": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HelloPostHandler7CDA6947",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "Endpoints6D633340"
+       },
+       "/test-invoke-stage/POST/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Default/POST/ApiPermission.Test.ApiLambdaStackEndpoints3B5F7AB9.POST.."
+   }
+  },
+  "EndpointsPOST0F052064": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "HelloPostHandler7CDA6947",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "Endpoints6D633340",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "Endpoints6D633340"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/Endpoints/Default/POST/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/01Q0W7CMAz8Ft5TbwwJ7RWY9jYNwQcgk3qdaZNUtSNUVf33JSmaePKd78528gbr9Tu8rvAula3bquMrTGdF25rUukwdumuNMH1Gb5WDN4cf/4yPNDgWSWw2jA6mU+goC7nORjYXFCEV2OWSOOyjbUn3KGSw5waV7jimHInuei7RB/ygvgujI6+5+8TSfU1ZsoDkD3GwVGZ+kf6GOosLmud/3ZQbcoZ9kx3fUfuoj5WLJeFD8DVredFxTCP8yyZ9EmxXN2GuhuiVHcFpqX+lyzsLQAEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiLambdaStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "EndpointsEndpoint2E1847FE": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "Endpoints6D633340"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "EndpointsDeploymentStagedevDECEC388"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

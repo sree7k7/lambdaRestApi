@@ -1,0 +1,31 @@
+
+; Exported zone file from Azure DNS
+;      Zone name: srikanth.nl
+;      Resource Group Name: dns
+;      Date and time (UTC): Fri, 19 Jan 2024 16:54:41 +0100
+
+$TTL 300
+$ORIGIN srikanth.nl.
+    
+@ 3600 IN SOA ns1-35.azure-dns.com. azuredns-hostmaster.microsoft.com. (
+              1 ; serial
+              3600 ; refresh
+              300 ; retry
+              2419200 ; expire
+              300 ; minimum
+              )
+
+  120 IN NS ns1-35.azure-dns.com.
+  120 IN NS ns2-35.azure-dns.net.
+  120 IN NS ns3-35.azure-dns.org.
+  120 IN NS ns4-35.azure-dns.info.
+
+  3600 IN TXT "MS=ms81805971"
+
+* 3600 IN TXT "d11naskv19t1u3.cloudfront.net"
+
+www 3600 IN NS ns-409.awsdns-51.com.
+    3600 IN NS ns-1919.awsdns-47.co.uk.
+    3600 IN NS ns-1074.awsdns-06.org.
+    3600 IN NS ns-989.awsdns-59.net.
+

@@ -1,0 +1,155 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "ApiLambdaStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "ApiLambdaStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "ApiLambdaStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "ApiLambdaStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/180c73f90ad0597d50ea345e5d0bcb237f639ff66cb9387606077546cbacaa98.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "ApiLambdaStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "ApiLambdaStack.assets"
+      ],
+      "metadata": {
+        "/ApiLambdaStack/HelloHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HelloHandlerServiceRole11EF7C63"
+          }
+        ],
+        "/ApiLambdaStack/HelloHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HelloHandler2E4FBA4D"
+          }
+        ],
+        "/ApiLambdaStack/HelloPostHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HelloPostHandlerServiceRole2035C48D"
+          }
+        ],
+        "/ApiLambdaStack/HelloPostHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HelloPostHandler7CDA6947"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Endpoints6D633340"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsDeployment11CDA792cfe607fc174591d453a349bcccfb5c7b"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/DeploymentStage.dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsDeploymentStagedevDECEC388"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsEndpoint2E1847FE"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Default/GET/ApiPermission.ApiLambdaStackEndpoints3B5F7AB9.GET..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsGETApiPermissionApiLambdaStackEndpoints3B5F7AB9GET53906287"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Default/GET/ApiPermission.Test.ApiLambdaStackEndpoints3B5F7AB9.GET..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsGETApiPermissionTestApiLambdaStackEndpoints3B5F7AB9GET1006BE89"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Default/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsGETDBEEDC1E"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Default/POST/ApiPermission.ApiLambdaStackEndpoints3B5F7AB9.POST..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsPOSTApiPermissionApiLambdaStackEndpoints3B5F7AB9POSTC7828AA6"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Default/POST/ApiPermission.Test.ApiLambdaStackEndpoints3B5F7AB9.POST..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsPOSTApiPermissionTestApiLambdaStackEndpoints3B5F7AB9POST5E32F755"
+          }
+        ],
+        "/ApiLambdaStack/Endpoints/Default/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EndpointsPOST0F052064"
+          }
+        ],
+        "/ApiLambdaStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/ApiLambdaStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/ApiLambdaStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/ApiLambdaStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "ApiLambdaStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
