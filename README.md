@@ -13,13 +13,14 @@
 - test it.
 
 ### To integrate with API Gateway
+
 - Create REST API gw
 - Create Method: Get
 - for lambda: 'lambdafunctionName:${stageVariables.lambdaAlias}'
-e.g 'helloworldversion:${stageVariables.lambdaAlias}'
-- save it
-
+- $->  e.g: 'helloworldversion:${stageVariables.lambdaAlias}'
+- save it.
 - execute the below command by replacing the '${stageVariables.lambdaAlias}' with alias name: 'oldestNewest'
+
 ```
 aws lambda add-permission \
 --function-name "arn:aws:lambda:eu-central-1:619831221558:function:helloworldversion:oldestNewest" \

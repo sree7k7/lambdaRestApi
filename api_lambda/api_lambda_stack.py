@@ -27,26 +27,27 @@ class ApiLambdaStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        ## create a lambda function hello world 
+        ## create a lambda function hello world
+        # # Get method
         lambda_function = lambda_.Function(
             self, "HelloHandler",
-            function_name='helloworld',
-            runtime=lambda_.Runtime.PYTHON_3_12,
+            function_name='helloworldxy',
+            runtime=lambda_.Runtime.PYTHON_3_10,
             code=lambda_.Code.from_asset('lambda'),
             handler='helloworld.lambda_handler', # file name is helloworld.py, function name is lambda_handler
         )
 
         # # create a lambda function create s3 bucket
+        # # Post method
         lambda_function_2 = lambda_.Function(
             self, "HelloPostHandler",
             function_name='post_helloworld',
-            runtime=lambda_.Runtime.PYTHON_3_12,
+            runtime=lambda_.Runtime.PYTHON_3_10,
             code=lambda_.Code.from_asset('lambda'),
-            handler='post_helloworld.lambda_handler', # file name is create_s3.py, function name is lambda_handler
+            handler='post_helloworld.lambda_handler', 
             environment={
                 'body': 'env-test',
             }
-
         )
 
         # # create a lambda function to execute the bash script
